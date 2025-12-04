@@ -1,0 +1,72 @@
+{
+  "instructions": {
+    "title": "Instrucciones Personalizadas para GitHub Copilot",
+    "commands": [
+      {
+        "name": "/sync-versions",
+        "description": "Sincroniza las versiones de los proyectos relacionados (backend, frontend, etc.) con los archivos terraform.tfvars de la infraestructura.",
+        "parameters": [
+          {
+            "name": "entorno",
+            "type": "string",
+            "required": false,
+            "description": "dev, pre o pro. Si no se especifica, actualiza todos los entornos.",
+            "allowedValues": ["dev", "pre", "pro"]
+          }
+        ],
+        "behavior": [
+          "Busca proyectos hermanos (en el directorio padre del proyecto actual) que coincidan con los componentes configurados",
+          "Extrae de los tags del git la última versión publicada para cada componente y cada entorno seleccionado",
+          "Actualiza las variables correspondientes en los archivos terraform.tfvars de cada entorno",
+          "Reporta los cambios realizados"
+        ],
+        "supportedComponents": [
+          {
+            "type": "Backend API",
+            "searchPattern": "Carpeta con \"api\"",
+            "sourceFile": "git",
+            "fieldTag": "Sacar version del ultimo tag generado por entorno",
+            "terraformVariable": "image_repository_backend_tag"
+          },
+          {
+            "type": "Frontend UI",
+            "searchPattern": "Carpeta con \"ui\"",
+            "sourceFile": "git",
+            "fieldTag": "Sacar version del ultimo tag generado por entorno",
+            "terraformVariable": "image_repository_frontend_tag"
+          },
+          {
+            "type": "Grafana",
+            "searchPattern": "Carpeta con \"grafana\"",
+            "sourceFile": "git",
+            "fieldTag": "Sacar los valores del ultimo tag generado por entorno",
+            "terraformVariable": "image_repository_grafana_tag"
+          },
+          {
+            "type": "Prometheus",
+            "searchPattern": "Carpeta con \"prometheus\"",
+            "sourceFile": "git",
+            "fieldTag": "Sacar los valores del ultimo tag generado por entorno",
+            "terraformVariable": "image_repository_prometheus_tag"
+          }
+        ],
+        "examples": {
+          "usage": [
+            "/sync-versions",
+            "/sync-versions dev",
+            "/sync-versions pre",
+            "/sync-versions pro"
+          ],
+          "folderStructure": [
+            "/3981.17-disp-infra",
+            "/3981.17-disp-api",
+            "/3981.17-disp-ui",
+            "/3981.17-disp-grafana",
+            "/3981.17-disp-prometheus"
+          ],
+          "expectedResponse": "✅ Backend (api): 1.0.1 → image_repository_backend_tag actualizada en dev, pre, pro\n✅ Frontend (ui): 1.0.5 → image_repository_frontend_tag actualizada en dev, pre, pro\n✅ Grafana: 20251104.101114 → image_repository_grafana_tag actualizada en dev, pre, pro\n✅ Prometheus: 20251202.085647 → image_repository_prometheus_tag actualizada en dev, pre, pro"
+        }
+      }
+    ]
+  }
+}
