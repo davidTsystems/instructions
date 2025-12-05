@@ -15,7 +15,7 @@
           }
         ],
         "behavior": [
-          "Busca proyectos hermanos (en el directorio padre del proyecto actual) que coincidan con los componentes configurados",
+          "Busca proyectos hermanos (en el directorio padre del proyecto actual) que coincidan con los componentes configurados en caso de no encontrar buscar los en la carpeta superior hacer un cd .. en consola para conseguirlo si es preciso",
           "Extrae de los tags del git la última versión publicada para cada componente y cada entorno seleccionado",
           "Actualiza las variables correspondientes en los archivos terraform.tfvars de cada entorno",
           "Reporta los cambios realizados"
